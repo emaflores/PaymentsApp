@@ -1,0 +1,40 @@
+# Compiled class file
+target/
+
+# Compiled sources
+*.class
+
+# Dependency directories
+dependency/
+
+# Maven artifact files
+*.jar
+*.war
+*.ear
+*.nar
+*.rar
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.lz
+*.tar.lzma
+*.tar.Z
+*.tar.bz
+*.tar.bz2
+*.tar.xz
+*.pom
+
+# Maven log files
+mvn*.log
+
+# IntelliJ IDEA
+.idea/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Spring Boot generated files
+spring-boot-*.properties
