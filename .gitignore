@@ -38,3 +38,5 @@ mvn*.log
 
 # Spring Boot generated files
 spring-boot-*.properties
+
+*.DS_Store

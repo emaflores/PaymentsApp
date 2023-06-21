@@ -3,7 +3,9 @@ package com.emaflores.paymentsmicroservice.controller;
 import com.emaflores.paymentsmicroservice.entity.Payment;
 import com.emaflores.paymentsmicroservice.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/payments")
+@RefreshScope
 public class PaymentController {
 
     @Autowired
@@ -25,22 +28,34 @@ public class PaymentController {
     @Autowired
     private DiscoveryClient discoveryClient;
 
-    private boolean checkUser(String userId){
-        String users = discoveryClient.getInstances("users-microservice")
-                .stream()
-                .findFirst()
-                .map(instance -> instance.getUri().toString())
-                .orElseThrow(() -> new RuntimeException("users microservice not available"));
+//    private boolean checkUser(String userId){
+//        String users = discoveryClient.getInstances("users-microservice")
+//                .stream()
+//                .findFirst()
+//                .map(instance -> instance.getUri().toString())
+//                .orElseThrow(() -> new RuntimeException("users microservice not available"));
+//
+//        RestTemplate restTemplate = new RestTemplate();
+//        ResponseEntity<String> response = restTemplate.getForEntity(users + "/user", String.class);
+//
+//        return response.getStatusCode().is2xxSuccessful();
+//    }
 
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(users + "/user", String.class);
-
-        return response.getStatusCode().is2xxSuccessful();
+    @Value("${app.testProp}")
+    private String testProp;
+    @GetMapping ("test-prop")
+    public String getTestProp() {
+        return this.testProp;
+    }
+    @GetMapping("/hola")
+    @ResponseStatus( HttpStatus.OK)
+    public String hola() {
+        return "Hola";
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<Payment>> getPaymentsByUserId(@PathVariable String userId) {
-        boolean userExists = checkUser(userId);
+        boolean userExists = true;//checkUser(userId);
         if (!userExists) {
             return ResponseEntity.notFound().build();
         }
